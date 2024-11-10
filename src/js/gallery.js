@@ -1,4 +1,4 @@
-import { getPhotos } from './unsplash-api';
+import { getPhotos, PER_PAGE } from './unsplash-api';
 import { refs } from './refs';
 import { createMarkup } from './createmarkup';
 import { showLoader, hideLoader } from './loader';
@@ -21,7 +21,7 @@ async function onSubmit(event) {
     const responce = await getPhotos(searchQuery, page);
     refs.list.innerHTML = createMarkup(responce.results);
 
-    responce.total > 12 ? showBtn() : hideBtn();
+    responce.total > PER_PAGE ? showBtn() : hideBtn();
   } catch (error) {
     console.log(error);
   } finally {
@@ -37,7 +37,7 @@ async function onClick(event) {
     const responce = await getPhotos(searchQuery, page);
     refs.list.insertAdjacentHTML('beforeend', createMarkup(responce.results));
 
-    const lastPage = Math.ceil(responce.total / 12);
+    const lastPage = Math.ceil(responce.total / PER_PAGE);
 
     lastPage === page ? hideBtn() : showBtn();
   } catch (error) {
